@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>moreads/</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cherry: {
+              950: '#140307',
+              900: '#23060c',
+              800: '#380b15',
+              700: '#52101e',
+              600: '#75172b',
+              500: '#9e1b34',
+              400: '#ca2a49',
+              300: '#e5536f',
+              200: '#f497a9',
+              100: '#fbdbe2',
+            },
+            gold: {
+              400: '#f3c77c',
+              300: '#fada9d',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #140307;
+      color: #fbdbe2;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .serif { font-family: 'Playfair Display', serif; }
+    .cherry-gradient {
+      background: linear-gradient(135deg, #380b15 0%, #140307 100%);
+    }
+    .cherry-card {
+      background: rgba(56, 11, 21, 0.45);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(229, 83, 111, 0.15);
+    }
+    .cherry-card:hover {
+      border-color: rgba(229, 83, 111, 0.35);
+    }
+    .glow-cherry {
+      box-shadow: 0 0 25px rgba(158, 27, 52, 0.35);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #140307;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #52101e;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #9e1b34;
+    }
+    .star-btn {
+      transition: all 0.2s;
+    }
+    .star-btn:hover {
+      transform: scale(1.2);
+    }
+    .text-glow {
+      text-shadow: 0 0 10px rgba(243, 199, 124, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cherry-500 selection:text-white custom-scrollbar">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 border-b border-cherry-700/40 bg-cherry-950/90 backdrop-blur-md px-4 lg:px-8 py-3 transition-all">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- LOGO -->
+      <div class="flex items-center gap-3 cursor-pointer group" onclick="switchTab('read')">
+        <div class="relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-cherry-700 via-cherry-500 to-rose-400 p-0.5 shadow-lg group-hover:shadow-cherry-500/40 transition-all duration-300 transform group-hover:scale-105">
+          <div class="w-full h-full bg-cherry-900 rounded-[14px] flex items-center justify-center relative overflow-hidden">
+            <!-- 3D Cherry Book Logo SVG -->
+            <svg class="w-7 h-7 transform group-hover:rotate-6 transition-transform" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 10C12 7.79086 13.7909 6 16 6H48C50.2091 6 52 7.79086 52 10V54C52 56.2091 50.2091 58 48 58H16C13.7909 58 12 56.2091 12 54V10Z" fill="url(#bookGrad)"/>
+              <path d="M16 8H48V14H16V8Z" fill="#75172B"/>
+              <circle cx="25" cy="28" r="6" fill="#E5536F"/>
+              <circle cx="39" cy="28" r="6" fill="#CA2A49"/>
+              <path d="M25 28C25 20 32 18 39 21" stroke="#2B8048" stroke-width="3" stroke-linecap="round"/>
+              <path d="M36 17C38 15 42 16 42 16" stroke="#2B8048" stroke-width="2" stroke-linecap="round"/>
+              <text x="32" y="49" font-family="'Playfair Display', serif" font-weight="900" font-size="20" fill="#F3C77C" text-anchor="middle">m</text>
+              <defs>
+                <linearGradient id="bookGrad" x1="12" y1="6" x2="52" y2="58" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#52101E"/>
+                  <stop offset="1" stop-color="#23060C"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight lowercase text-white flex items-center gap-1">
+            moreads<span class="text-cherry-400 font-serif">/</span>
+          </h1>
+          <p class="text-[10px] text-cherry-300/70 tracking-widest uppercase" id="site-tagline">the cherry realm for readers</p>
+        </div>
+      </div>
+
+      <!-- CENTER NAV TABS -->
+      <nav class="hidden md:flex items-center gap-1 bg-cherry-900/60 p-1.5 rounded-2xl border border-cherry-700/30">
+        <button onclick="switchTab('read')" id="nav-read" class="px-4 py-2 rounded-xl text-xs font-semibold lowercase transition-all flex items-center gap-2 bg-cherry-600 text-white shadow-md">
+          <span>📚</span> <span data-i18n="tab_read">read books</span>
+        </button>
+        <button onclick="switchTab('process')" id="nav-process" class="px-4 py-2 rounded-xl text-xs font-semibold lowercase transition-all flex items-center gap-2 text-cherry-200 hover:text-white hover:bg-cherry-800/50">
+          <span>📖</span> <span data-i18n="tab_process">in process</span>
+        </button>
+        <button onclick="switchTab('want')" id="nav-want" class="px-4 py-2 rounded-xl text-xs font-semibold lowercase transition-all flex items-center gap-2 text-cherry-200 hover:text-white hover:bg-cherry-800/50">
+          <span>🔖</span> <span data-i18n="tab_want">want to read</span>
+        </button>
+        <button onclick="switchTab('recommendations')" id="nav-recommendations" class="px-4 py-2 rounded-xl text-xs font-semibold lowercase transition-all flex items-center gap-2 text-cherry-200 hover:text-white hover:bg-cherry-800/50">
+          <span>✨</span> <span data-i18n="tab_recommendations">top recommendations</span>
+        </button>
+        <button onclick="switchTab('discussions')" id="nav-discussions" class="px-4 py-2 rounded-xl text-xs font-semibold lowercase transition-all flex items-center gap-2 text-cherry-200 hover:text-white hover:bg-cherry-800/50">
+          <span>💬</span> <span data-i18n="tab_discussions">discussions</span>
+        </button>
+      </nav>
+
+      <!-- RIGHT SIDE ACTION CONTROLS -->
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher -->
+        <div class="relative group">
+          <button class="bg-cherry-900 border border-cherry-700/50 px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 hover:border-cherry-400 transition">
+            <span id="current-lang-flag">🌐</span>
+            <span id="current-lang-code" class="uppercase">en</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-cherry-300"></i>
+          </button>
+          <div class="absolute right-0 top-full mt-2 w-44 bg-cherry-900/95 border border-cherry-700/60 rounded-2xl shadow-2xl py-2 hidden group-hover:block z-50 backdrop-blur-lg">
+            <div class="px-3 py-1 text-[10px] uppercase font-bold text-cherry-400 tracking-wider">select language</div>
+            <div class="max-h-60 overflow-y-auto custom-scrollbar text-xs">
+              <button onclick="setLanguage('en')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇬🇧 English</button>
+              <button onclick="setLanguage('uk')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇺🇦 Українська</button>
+              <button onclick="setLanguage('ru')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🌐 Русский</button>
+              <button onclick="setLanguage('de')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇩🇪 Deutsch</button>
+              <button onclick="setLanguage('es')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇪🇸 Español</button>
+              <button onclick="setLanguage('it')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇮🇹 Italiano</button>
+              <button onclick="setLanguage('pl')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇵🇱 Polski</button>
+              <button onclick="setLanguage('lt')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇱🇹 Lietuvių</button>
+              <button onclick="setLanguage('tr')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇹🇷 Türkçe</button>
+              <button onclick="setLanguage('th')" class="w-full px-3 py-1.5 text-left hover:bg-cherry-700/50 flex items-center gap-2">🇹🇭 ไทย</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assistant Customizer Trigger -->
+        <button onclick="toggleAssistantModal()" class="relative p-2 rounded-xl bg-gradient-to-r from-cherry-700 to-cherry-600 hover:from-cherry-600 hover:to-cherry-500 border border-cherry-400/30 text-white transition shadow-md flex items-center gap-2 text-xs font-semibold">
+          <span class="text-base">🧑‍💼</span>
+          <span class="hidden sm:inline" data-i18n="btn_assistant">ai companion</span>
+        </button>
+
+        <!-- Book Child Virtual Pet Drawer Trigger -->
+        <button onclick="toggleChildDrawer()" class="relative p-2 rounded-xl bg-gradient-to-r from-cherry-800 to-cherry-900 border border-cherry-500/30 hover:border-gold-400 text-gold-300 transition shadow-md flex items-center gap-2 text-xs font-semibold">
+          <span class="text-base">🍒</span>
+          <span class="hidden sm:inline" data-i18n="btn_book_child">book child</span>
+          <span id="child-badge-lvl" class="bg-cherry-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">lvl 1</span>
+        </button>
+
+        <!-- User Profile Avatar -->
+        <button onclick="toggleAuthModal()" class="flex items-center gap-2 bg-cherry-900 border border-cherry-700/50 p-1.5 rounded-xl hover:border-cherry-400 transition">
+          <div id="user-avatar-display" class="w-7 h-7 rounded-lg bg-cherry-600 text-white flex items-center justify-center font-bold text-xs">
+            🌸
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE NAVIGATION BOTTOM / SCROLLABLE -->
+    <div class="flex md:hidden overflow-x-auto gap-2 mt-3 pb-1 border-t border-cherry-800/40 pt-2 custom-scrollbar">
+      <button onclick="switchTab('read')" id="mob-read" class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-cherry-600 text-white">📚 read</button>
+      <button onclick="switchTab('process')" id="mob-process" class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-cherry-900/80 text-cherry-200">📖 process</button>
+      <button onclick="switchTab('want')" id="mob-want" class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-cherry-900/80 text-cherry-200">🔖 want</button>
+      <button onclick="switchTab('recommendations')" id="mob-recommendations" class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-cherry-900/80 text-cherry-200">✨ top</button>
+      <button onclick="switchTab('discussions')" id="mob-discussions" class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-cherry-900/80 text-cherry-200">💬 discussions</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8 w-full flex-grow">
+
+    <!-- TAB 1: READ BOOKS (LETTER REVIEWS) -->
+    <section id="tab-read" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-cherry-900/30 p-6 rounded-3xl border border-cherry-800/40">
+        <div>
+          <h2 class="text-3xl font-bold serif text-white flex items-center gap-3">
+            <span class="text-2xl">💌</span> <span data-i18n="read_title">my book letters & impressions</span>
+          </h2>
+          <p class="text-xs text-cherry-300/80 mt-1" data-i18n="read_subtitle">create aesthetic letters with multi-criteria ratings, aesthetic pictures & quotes</p>
+        </div>
+        <button onclick="openCreateLetterModal()" class="bg-gradient-to-r from-cherry-500 to-cherry-600 hover:from-cherry-400 hover:to-cherry-500 text-white font-bold px-5 py-3 rounded-2xl shadow-lg hover:shadow-cherry-500/30 transition flex items-center gap-2 text-sm">
+          <span>✨</span> <span data-i18n="btn_write_letter">write a book letter</span>
+        </button>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="flex items-center justify-between gap-4 text-xs">
+        <span class="text-cherry-300 font-medium lowercase" id="letter-count">showing 0 letters</span>
+        <div class="flex items-center gap-2">
+          <input type="text" id="letter-search" oninput="renderLetters()" placeholder="search by title or author..." class="bg-cherry-950 border border-cherry-800 rounded-xl px-3 py-1.5 text-xs text-white placeholder-cherry-600 focus:outline-none focus:border-cherry-400">
+        </div>
+      </div>
+
+      <!-- CARDS GRID -->
+      <div id="letters-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Dynamic Cards Inserted Here -->
+      </div>
+    </section>
+
+    <!-- TAB 2: IN PROCESS OF READING -->
+    <section id="tab-process" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-cherry-900/30 p-6 rounded-3xl border border-cherry-800/40">
+        <div>
+          <h2 class="text-3xl font-bold serif text-white flex items-center gap-3">
+            <span>📖</span> <span data-i18n="process_title">in the process of reading</span>
+          </h2>
+          <p class="text-xs text-cherry-300/80 mt-1" data-i18n="process_subtitle">track current pages, daily goals, and active bookmarks</p>
+        </div>
+        <button onclick="openAddProcessModal()" class="bg-cherry-600 hover:bg-cherry-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition">
+          <span>➕</span> <span data-i18n="btn_add_active">add current reading</span>
+        </button>
+      </div>
+
+      <div id="process-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Dynamic active reading items -->
+      </div>
+    </section>
+
+    <!-- TAB 3: WANT TO READ -->
+    <section id="tab-want" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-cherry-900/30 p-6 rounded-3xl border border-cherry-800/40">
+        <div>
+          <h2 class="text-3xl font-bold serif text-white flex items-center gap-3">
+            <span>🔖</span> <span data-i18n="want_title">want to read wishlist</span>
+          </h2>
+          <p class="text-xs text-cherry-300/80 mt-1" data-i18n="want_subtitle">saved books waiting on your cozy night bookshelf</p>
+        </div>
+        <button onclick="openAddWishModal()" class="bg-cherry-600 hover:bg-cherry-500 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 transition">
+          <span>📌</span> <span data-i18n="btn_add_wish">add to wishlist</span>
+        </button>
+      </div>
+
+      <div id="wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Dynamic wishlist cards -->
+      </div>
+    </section>
+
+    <!-- TAB 4: TOP RECOMMENDATIONS -->
+    <section id="tab-recommendations" class="hidden space-y-6">
+      <div class="bg-gradient-to-r from-cherry-900 via-cherry-800 to-cherry-950 p-8 rounded-3xl border border-cherry-700/40 relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl">
+          <span class="bg-cherry-500/30 text-gold-300 border border-cherry-400/30 text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-bold">curated list</span>
+          <h2 class="text-4xl font-extrabold serif text-white mt-2 lowercase" data-i18n="top_title">top dark cherry picks/</h2>
+          <p class="text-sm text-cherry-200 mt-2" data-i18n="top_subtitle">handpicked atmospheric novels full of romance, mystery, and tragic beauty.</p>
+        </div>
+      </div>
+
+      <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Curated Preset Books -->
+      </div>
+    </section>
+
+    <!-- TAB 5: DISCUSSIONS -->
+    <section id="tab-discussions" class="hidden space-y-6">
+      <div class="bg-cherry-900/30 p-6 rounded-3xl border border-cherry-800/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-3xl font-bold serif text-white flex items-center gap-3">
+            <span>💬</span> <span data-i18n="disc_title">global literary lounge</span>
+          </h2>
+          <p class="text-xs text-cherry-300/80 mt-1" data-i18n="disc_subtitle">select a language branch, choose a book, and discuss with fellow readers!</p>
+        </div>
+        <button onclick="openNewPostModal()" class="bg-gradient-to-r from-cherry-500 to-cherry-600 text-white font-bold px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 hover:shadow-lg transition">
+          <span>✍️</span> <span data-i18n="btn_create_post">create public thread</span>
+        </button>
+      </div>
+
+      <!-- BRANCH CONTROLS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Step 1: Language Branch -->
+        <div class="bg-cherry-950/80 p-4 rounded-2xl border border-cherry-800">
+          <label class="block text-[11px] font-bold text-cherry-400 uppercase tracking-wider mb-2" data-i18n="disc_branch_lang">1. language branch</label>
+          <select id="disc-lang-filter" onchange="filterDiscussions()" class="w-full bg-cherry-900 border border-cherry-700/60 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cherry-400">
+            <option value="all">🌐 All Languages</option>
+            <option value="en">🇬🇧 English Lounge</option>
+            <option value="uk">🇺🇦 Українська гілка</option>
+            <option value="ru">🌐 Русскоязычный филиал</option>
+            <option value="de">🇩🇪 Deutsche Lounge</option>
+            <option value="es">🇪🇸 Rama Española</option>
+            <option value="it">🇮🇹 Salotto Italiano</option>
+            <option value="pl">🇵🇱 Polska Dyskusja</option>
+            <option value="lt">🇱🇹 Lietuvių Filialas</option>
+            <option value="tr">🇹🇷 Türkçe Salon</option>
+            <option value="th">🇹🇭 ชุมชนภาษาไทย</option>
+          </select>
+        </div>
+
+        <!-- Step 2: Book Filter -->
+        <div class="bg-cherry-950/80 p-4 rounded-2xl border border-cherry-800">
+          <label class="block text-[11px] font-bold text-cherry-400 uppercase tracking-wider mb-2" data-i18n="disc_branch_book">2. filter by book</label>
+          <select id="disc-book-filter" onchange="filterDiscussions()" class="w-full bg-cherry-900 border border-cherry-700/60 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cherry-400">
+            <option value="all">📚 All Discussed Books</option>
+            <option value="The Secret History">The Secret History (Donna Tartt)</option>
+            <option value="Mexican Gothic">Mexican Gothic (Silvia Moreno-Garcia)</option>
+            <option value="The Shadow of the Wind">The Shadow of the Wind (Carlos Ruiz Zafón)</option>
+            <option value="Normal People">Normal People (Sally Rooney)</option>
+          </select>
+        </div>
+
+        <!-- Social Activity Quick Overview -->
+        <div class="bg-cherry-950/80 p-4 rounded-2xl border border-cherry-800 flex items-center justify-between">
+          <div>
+            <div class="text-xs text-cherry-300" data-i18n="friends_online">active reader friends</div>
+            <div class="flex items-center gap-1 mt-1" id="friends-avatars-row">
+              <span class="w-6 h-6 rounded-full bg-rose-800 text-[10px] flex items-center justify-center border border-cherry-400">👧</span>
+              <span class="w-6 h-6 rounded-full bg-purple-800 text-[10px] flex items-center justify-center border border-cherry-400">👦</span>
+              <span class="w-6 h-6 rounded-full bg-amber-800 text-[10px] flex items-center justify-center border border-cherry-400">👩</span>
+              <span class="text-xs text-cherry-400 ml-1 font-bold">+12</span>
+            </div>
+          </div>
+          <button onclick="openFriendsModal()" class="bg-cherry-800 hover:bg-cherry-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold">
+            👥 <span data-i18n="btn_friends">friends list</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- DISCUSSIONS FEED -->
+      <div id="discussions-feed" class="space-y-4">
+        <!-- Dynamic Posts List -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ASSISTANT CUSTOMIZER MODAL -->
+  <div id="assistant-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-cherry-950 border border-cherry-700/80 rounded-3xl w-full max-w-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+      <!-- Avatar Preview Panel -->
+      <div class="bg-gradient-to-b from-cherry-900 to-cherry-950 p-6 md:w-1/2 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-cherry-800 relative">
+        <div class="absolute top-3 left-3 bg-cherry-800/60 text-cherry-200 text-[10px] uppercase font-bold px-2.5 py-1 rounded-full border border-cherry-600/30">
+          live assistant preview
+        </div>
+
+        <!-- Dynamic Avatar Display -->
+        <div class="relative my-4 group">
+          <div class="w-36 h-36 rounded-full bg-gradient-to-tr from-cherry-700 to-rose-400 p-1 shadow-2xl">
+            <div id="assistant-avatar-card" class="w-full h-full rounded-full bg-cherry-900 flex items-center justify-center text-7xl relative overflow-hidden">
+              💃
+            </div>
+          </div>
+          <span id="assistant-accessory-badge" class="absolute bottom-1 right-1 bg-gold-400 text-cherry-950 p-2 rounded-full text-sm shadow-md">👓</span>
+        </div>
+
+        <h3 id="assistant-preview-name" class="text-xl font-bold text-white serif lowercase">madeline (ai companion)</h3>
+        <p id="assistant-preview-details" class="text-xs text-cherry-300 mt-0.5 text-center">26 yrs • elegant woman • gothic style</p>
+
+        <!-- Dynamic Assistant Greeting Dialogue -->
+        <div class="mt-4 bg-cherry-900/90 border border-cherry-700/50 p-3 rounded-2xl text-xs text-cherry-100 italic relative">
+          <div class="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] bg-cherry-600 px-2 rounded-full font-sans not-italic font-bold text-white uppercase">advice</div>
+          "<span id="assistant-speech">Hello my darling reader! Ready to dive into dark romance and tragic stories today?</span>"
+        </div>
+      </div>
+
+      <!-- Controls Form -->
+      <div class="p-6 md:w-1/2 flex flex-col justify-between max-h-[80vh] overflow-y-auto custom-scrollbar">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-white lowercase flex items-center gap-2">
+              <span>🎭</span> customize reading companion
+            </h3>
+            <button onclick="toggleAssistantModal()" class="text-cherry-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block text-cherry-300 mb-1 font-semibold">Gender & Identity</label>
+              <select id="ast-gender" onchange="updateAssistantPreview()" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-1.5 text-white">
+                <option value="female">Woman (Lady companion)</option>
+                <option value="male">Man (Gentleman reader)</option>
+                <option value="nonbinary">Enby Scholar</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-cherry-300 mb-1 font-semibold">Age</label>
+                <input type="number" id="ast-age" value="26" min="18" max="90" onchange="updateAssistantPreview()" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-1.5 text-white">
+              </div>
+              <div>
+                <label class="block text-cherry-300 mb-1 font-semibold">Date of Birth</label>
+                <input type="date" id="ast-dob" value="1998-10-14" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-1.5 text-white">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-cherry-300 mb-1 font-semibold">Race / Ethnicity Appearance</label>
+              <select id="ast-race" onchange="updateAssistantPreview()" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-1.5 text-white">
+                <option value="european">European Classic Gothic</option>
+                <option value="eastasian">East Asian Elegance</option>
+                <option value="latina">Latina Dark Romance</option>
+                <option value="afro">Afro-descendant Royal Scholar</option>
+                <option value="southasian">South Asian Mystique</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-cherry-300 mb-1 font-semibold">Hair Color & Style</label>
+              <select id="ast-hair" onchange="updateAssistantPreview()" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-1.5 text-white">
+                <option value="cherry">Dark Cherry Red Waves</option>
+                <option value="raven">Raven Black Bob</option>
+                <option value="silver">Silver Velvet Locks</option>
+                <option value="auburn">Auburn Curls</option>
+                <option value="blond">Honey Golden Updo</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-cherry-300 mb-1 font-semibold">Clothing Outfit Style</label>
+              <select id="ast-outfit" onchange="updateAssistantPreview()" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-1.5 text-white">
+                <option value="gothic">Gothic Velvet Corset & Coat</option>
+                <option value="academia">Dark Academia Sweater & Tweed</option>
+                <option value="cozy">Cozy Silk Robe & Tea Cup</option>
+                <option value="vintage">Victorian Lace Gown</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-cherry-300 mb-1 font-semibold">Signature Accessory</label>
+              <select id="ast-accessory" onchange="updateAssistantPreview()" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-1.5 text-white">
+                <option value="glasses">👓 Vintage Reading Glasses</option>
+                <option value="monocle">🧐 Gold Monocle</option>
+                <option value="choker">🖤 Black Velvet Choker</option>
+                <option value="rose">🌹 Dark Rose Barrette</option>
+                <option value="book">📖 Antique Pocket Tome</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="saveAssistantSettings()" class="w-full mt-4 bg-cherry-500 hover:bg-cherry-400 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">
+          save companion preferences
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOK CHILD VIRTUAL PET DRAWER -->
+  <div id="child-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-cherry-950/95 border-l border-cherry-700/60 shadow-2xl backdrop-blur-xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    <div class="p-5 border-b border-cherry-800 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🍒</span>
+        <div>
+          <h3 class="font-bold text-white text-base lowercase">our book child</h3>
+          <p class="text-[10px] text-cherry-300">chat daily & log books to grow your shared pet</p>
+        </div>
+      </div>
+      <button onclick="toggleChildDrawer()" class="text-cherry-400 hover:text-white p-2"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- PET STATUS & EVOLUTION DISPLAY -->
+    <div class="p-6 flex-grow overflow-y-auto custom-scrollbar space-y-5">
+      <!-- Pet Visual Stage Box -->
+      <div class="bg-gradient-to-b from-cherry-900 to-cherry-950 p-6 rounded-3xl border border-cherry-700/50 flex flex-col items-center justify-center relative text-center">
+        <div class="absolute top-3 right-3 bg-gold-400/20 text-gold-300 border border-gold-400/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
+          stage: <span id="child-stage-title">Sprout Tome</span>
+        </div>
+
+        <!-- 3D Style Pet Avatar -->
+        <div class="w-28 h-28 my-3 rounded-full bg-gradient-to-tr from-cherry-600 to-rose-400 p-1 flex items-center justify-center shadow-xl relative animate-pulse">
+          <div id="child-avatar-emoji" class="text-6xl">
+            🌱
+          </div>
+        </div>
+
+        <h4 id="child-pet-name" class="text-xl font-bold text-white serif lowercase">lyra (book child)</h4>
+        <p id="child-outfit-desc" class="text-xs text-cherry-300 mt-1">wearing: little leaf bow & berry apron</p>
+
+        <!-- Growth EXP Bar -->
+        <div class="w-full mt-4 bg-cherry-900 rounded-full h-3 border border-cherry-700 p-0.5 relative">
+          <div id="child-exp-bar" class="bg-gradient-to-r from-cherry-500 to-gold-400 h-full rounded-full transition-all duration-500" style="width: 35%;"></div>
+        </div>
+        <div class="flex justify-between w-full text-[10px] text-cherry-300 mt-1 font-bold">
+          <span>exp: <span id="child-exp-val">35</span>/100</span>
+          <span>streak: <span id="child-streak-val">3</span> days 🔥</span>
+        </div>
+      </div>
+
+      <!-- PET WARDROBE CUSTOMIZATION -->
+      <div class="bg-cherry-900/40 p-4 rounded-2xl border border-cherry-800">
+        <h5 class="text-xs font-bold text-gold-300 lowercase mb-2 flex items-center justify-between">
+          <span>👗 book child wardrobe</span>
+          <span class="text-[10px] text-cherry-400 font-normal">unlocks at higher levels</span>
+        </h5>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="changeChildOutfit('berry')" class="bg-cherry-900 hover:bg-cherry-700 border border-cherry-700 p-2 rounded-xl text-center text-xs">
+            <div class="text-lg">🍓</div>
+            <div class="text-[9px] text-cherry-200 mt-1">Berry Dress</div>
+          </button>
+          <button onclick="changeChildOutfit('gothic')" class="bg-cherry-900 hover:bg-cherry-700 border border-cherry-700 p-2 rounded-xl text-center text-xs">
+            <div class="text-lg">🎀</div>
+            <div class="text-[9px] text-cherry-200 mt-1">Gothic Bow</div>
+          </button>
+          <button onclick="changeChildOutfit('wizard')" class="bg-cherry-900 hover:bg-cherry-700 border border-cherry-700 p-2 rounded-xl text-center text-xs">
+            <div class="text-lg">🧙‍♀️</div>
+            <div class="text-[9px] text-cherry-200 mt-1">Reader Cape</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- CHAT WITH BOOK CHILD -->
+      <div class="bg-cherry-900/30 p-4 rounded-2xl border border-cherry-800/80 flex flex-col h-52">
+        <h5 class="text-xs font-bold text-cherry-200 mb-2">💬 chat daily to raise her</h5>
+        <div id="child-chat-box" class="flex-grow overflow-y-auto space-y-2 text-xs pr-1 custom-scrollbar">
+          <div class="bg-cherry-800/60 p-2 rounded-xl text-cherry-100 max-w-[85%]">
+            <span class="font-bold text-gold-300">Lyra:</span> Hi reader! Did you read any chapters today? I want to grow strong! 🍒
+          </div>
+        </div>
+        <div class="mt-2 flex gap-1">
+          <input type="text" id="child-chat-input" placeholder="say something sweet..." class="flex-grow bg-cherry-950 border border-cherry-700 rounded-xl px-3 py-1.5 text-xs text-white placeholder-cherry-600 focus:outline-none focus:border-cherry-400">
+          <button onclick="sendChildChatMessage()" class="bg-cherry-600 hover:bg-cherry-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WRITE LETTER MODAL -->
+  <div id="create-letter-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-cherry-950 border border-cherry-700 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-cherry-800 pb-3">
+        <h3 class="text-xl font-bold text-white serif lowercase flex items-center gap-2">
+          <span>💌</span> new book letter & review
+        </h3>
+        <button onclick="closeCreateLetterModal()" class="text-cherry-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-cherry-300 mb-1 font-semibold">Book Title *</label>
+            <input type="text" id="let-title" placeholder="e.g. The Seven Husbands of Evelyn Hugo" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white placeholder-cherry-600 focus:outline-none focus:border-cherry-400">
+          </div>
+          <div>
+            <label class="block text-cherry-300 mb-1 font-semibold">Author *</label>
+            <input type="text" id="let-author" placeholder="e.g. Taylor Jenkins Reid" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white placeholder-cherry-600 focus:outline-none focus:border-cherry-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Aesthetics Image Gallery URL (comma separated URLs)</label>
+          <input type="text" id="let-images" placeholder="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c, https://..." class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white placeholder-cherry-600">
+        </div>
+
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Book Annotation / Summary</label>
+          <textarea id="let-annotation" rows="2" placeholder="Brief summary of what this book is about..." class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white placeholder-cherry-600"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Personal Impressions & Deep Thoughts</label>
+          <textarea id="let-impressions" rows="3" placeholder="How did this book make you feel? Favourite quotes..." class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white placeholder-cherry-600"></textarea>
+        </div>
+
+        <!-- MULTI CRITERIA STAR RATINGS -->
+        <div class="bg-cherry-900/50 p-4 rounded-2xl border border-cherry-800 space-y-3">
+          <h4 class="font-bold text-gold-300 text-xs lowercase">⭐ detailed category star ratings</h4>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <span class="text-cherry-200 text-[11px] block mb-1">Overall Book Rating</span>
+              <div class="flex gap-1 text-base text-gold-400" id="star-overall">
+                <!-- Stars rendered dynamically -->
+              </div>
+            </div>
+
+            <div>
+              <span class="text-cherry-200 text-[11px] block mb-1">Love Line / Romance 💖</span>
+              <div class="flex gap-1 text-base text-gold-400" id="star-love"></div>
+            </div>
+
+            <div>
+              <span class="text-cherry-200 text-[11px] block mb-1">Tragic Moments 💔</span>
+              <div class="flex gap-1 text-base text-gold-400" id="star-tragic"></div>
+            </div>
+
+            <div>
+              <span class="text-cherry-200 text-[11px] block mb-1">Funny Moments 😂</span>
+              <div class="flex gap-1 text-base text-gold-400" id="star-funny"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeCreateLetterModal()" class="px-4 py-2 bg-cherry-900 hover:bg-cherry-800 text-cherry-200 rounded-xl text-xs font-semibold">cancel</button>
+        <button onclick="saveLetter()" class="px-5 py-2 bg-cherry-500 hover:bg-cherry-400 text-white rounded-xl text-xs font-bold shadow-lg">publish letter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTH / PROFILE MODAL -->
+  <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-cherry-950 border border-cherry-700 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-cherry-800 pb-3">
+        <h3 class="text-lg font-bold text-white serif lowercase flex items-center gap-2">
+          <span>🌸</span> reader account & profile
+        </h3>
+        <button onclick="toggleAuthModal()" class="text-cherry-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Your Reader Handle</label>
+          <input type="text" id="user-handle-input" value="cherry_reader" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Avatar Emoji</label>
+          <input type="text" id="user-emoji-input" value="🌸" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Favorite Book Genre</label>
+          <input type="text" id="user-genre-input" value="Dark Academia & Gothic Romance" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white">
+        </div>
+      </div>
+
+      <button onclick="saveUserProfile()" class="w-full bg-cherry-500 hover:bg-cherry-400 text-white font-bold py-2.5 rounded-xl text-xs shadow-lg">
+        save profile settings
+      </button>
+    </div>
+  </div>
+
+  <!-- FRIENDS MODAL -->
+  <div id="friends-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-cherry-950 border border-cherry-700 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-cherry-800 pb-3">
+        <h3 class="text-lg font-bold text-white serif lowercase flex items-center gap-2">
+          <span>👥</span> reader friends & daily updates
+        </h3>
+        <button onclick="openFriendsModal()" class="text-cherry-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3 max-h-72 overflow-y-auto custom-scrollbar" id="friends-list-container">
+        <!-- Dynamic friends list -->
+      </div>
+
+      <div class="pt-2 border-t border-cherry-800 flex gap-2">
+        <input type="text" id="new-friend-name" placeholder="enter friend handle..." class="flex-grow bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-xs text-white">
+        <button onclick="addFriend()" class="bg-cherry-600 hover:bg-cherry-500 text-white px-3 py-2 rounded-xl text-xs font-bold">add friend</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW DISCUSSION POST MODAL -->
+  <div id="new-post-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-cherry-950 border border-cherry-700 rounded-3xl w-full max-w-lg p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-cherry-800 pb-3">
+        <h3 class="text-lg font-bold text-white serif lowercase flex items-center gap-2">
+          <span>✍️</span> start new discussion thread
+        </h3>
+        <button onclick="openNewPostModal()" class="text-cherry-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Language Branch *</label>
+          <select id="post-lang-select" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white">
+            <option value="en">🇬🇧 English</option>
+            <option value="uk">🇺🇦 Українська</option>
+            <option value="ru">🌐 Русский</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="it">🇮🇹 Italiano</option>
+            <option value="pl">🇵🇱 Polski</option>
+            <option value="lt">🇱🇹 Lietuvių</option>
+            <option value="tr">🇹🇷 Türkçe</option>
+            <option value="th">🇹🇭 ไทย</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Book Subject *</label>
+          <input type="text" id="post-book-input" placeholder="e.g. The Secret History" class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white">
+        </div>
+
+        <div>
+          <label class="block text-cherry-300 mb-1 font-semibold">Discussion Thoughts / Question *</label>
+          <textarea id="post-text-input" rows="4" placeholder="What did you think of the ending? Let's discuss..." class="w-full bg-cherry-900 border border-cherry-700 rounded-xl px-3 py-2 text-white"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="openNewPostModal()" class="px-4 py-2 bg-cherry-900 text-cherry-200 rounded-xl text-xs">cancel</button>
+        <button onclick="publishPost()" class="px-5 py-2 bg-cherry-500 hover:bg-cherry-400 text-white rounded-xl text-xs font-bold">post thread</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-cherry-800/50 bg-cherry-950 py-6 px-4 text-center text-xs text-cherry-300/70 mt-12">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white lowercase">moreads/</span>
+        <span>• dark cherry reader haven</span>
+      </div>
+      <p class="text-[11px]">crafted for book lovers with 🍒 and literary passion</p>
+    </div>
+  </footer>
+
+  <!-- APPLICATION SCRIPT LOGIC -->
+  <script>
+    // --- TRANSLATIONS DICTIONARY ---
+    const i18n = {
+      en: {
+        tab_read: "read books",
+        tab_process: "in process",
+        tab_want: "want to read",
+        tab_recommendations: "top recommendations",
+        tab_discussions: "discussions",
+        btn_assistant: "ai companion",
+        btn_book_child: "book child",
+        read_title: "my book letters & impressions",
+        read_subtitle: "create aesthetic letters with multi-criteria ratings, aesthetic pictures & quotes",
+        btn_write_letter: "write a book letter",
+        process_title: "in the process of reading",
+        process_subtitle: "track current pages, daily goals, and active bookmarks",
+        btn_add_active: "add current reading",
+        want_title: "want to read wishlist",
+        want_subtitle: "saved books waiting on your cozy night bookshelf",
+        btn_add_wish: "add to wishlist",
+        top_title: "top dark cherry picks/",
+        top_subtitle: "handpicked atmospheric novels full of romance, mystery, and tragic beauty.",
+        disc_title: "global literary lounge",
+        disc_subtitle: "select a language branch, choose a book, and discuss with fellow readers!",
+        btn_create_post: "create public thread",
+        disc_branch_lang: "1. language branch",
+        disc_branch_book: "2. filter by book",
+        friends_online: "active reader friends",
+        btn_friends: "friends list",
+      },
+      uk: {
+        tab_read: "прочитані книги",
+        tab_process: "у процесі читання",
+        tab_want: "хочу прочитати",
+        tab_recommendations: "топ рекомендації",
+        tab_discussions: "обговорення",
+        btn_assistant: "ai супутник",
+        btn_book_child: "книжкове дитя",
+        read_title: "мої книжкові листи та враження",
+        read_subtitle: "створюйте естетичні рецензії з детальними оцінками та естетичними фото",
+        btn_write_letter: "написати книжковий лист",
+        process_title: "у процесі читання",
+        process_subtitle: "відстежуйте прочитані сторінки та щоденний прогрес",
+        btn_add_active: "додати поточне читання",
+        want_title: "список бажаних книг",
+        want_subtitle: "книги, які чекають свого затишного вечора",
+        btn_add_wish: "додати у бажане",
+        top_title: "топ вибір dark cherry/",
+        top_subtitle: "атмосферні романи, сповнені кохання, таємниць і трагічної краси.",
+        disc_title: "глобальний літературний салон",
+        disc_subtitle: "обирайте мовну гілку, книгу та обговорюйте з іншими читачами!",
+        btn_create_post: "створити тему",
+        disc_branch_lang: "1. мовна гілка",
+        disc_branch_book: "2. фільтр за книгою",
+        friends_online: "активні друзі-читачі",
+        btn_friends: "список друзів",
+      },
+      ru: {
+        tab_read: "прочитанные книги",
+        tab_process: "в процессе чтения",
+        tab_want: "хочу прочитать",
+        tab_recommendations: "топ рекомендации",
+        tab_discussions: "обсуждения",
+        btn_assistant: "ai компаньон",
+        btn_book_child: "книжное дитя",
+        read_title: "мои книжные письма и впечатления",
+        read_subtitle: "создавайте эстетичные обзоры с подробными оценками и эстетикой",
+        btn_write_letter: "написать письмо",
+        process_title: "в процессе чтения",
+        process_subtitle: "отслеживайте страницы и ежедневные цели",
+        btn_add_active: "добавить чтение",
+        want_title: "хочу прочитать",
+        want_subtitle: "книги, ожидающие уютного вечера",
+        btn_add_wish: "добавить в желаемое",
+        top_title: "топ подборка dark cherry/",
+        top_subtitle: "атмосферные романы, полные романтики, тайн и трагизма.",
+        disc_title: "литературный салон",
+        disc_subtitle: "выберите языковую ветку и обсуждайте книги!",
+        btn_create_post: "создать тему",
+        disc_branch_lang: "1. языковой филиал",
+        disc_branch_book: "2. фильтр по книге",
+        friends_online: "активные друзья",
+        btn_friends: "список друзей",
+      },
+      de: {
+        tab_read: "gelesene bücher",
+        tab_process: "am lesen",
+        tab_want: "wunschliste",
+        tab_recommendations: "top empfehlungen",
+        tab_discussions: "diskussionen",
+        btn_assistant: "ai begleiter",
+        btn_book_child: "buch-kind",
+        read_title: "meine buchbriefe & eindrücke",
+        read_subtitle: "ästhetische rezensionen mit detaillierten bewertungen",
+        btn_write_letter: "brief schreiben",
+        process_title: "am lesen",
+        process_subtitle: "lesefortschritt und seiten verfolgen",
+        btn_add_active: "buch hinzufügen",
+        want_title: "wunschliste",
+        want_subtitle: "bücher für gemütliche abende",
+        btn_add_wish: "auf die wunschliste",
+        top_title: "dark cherry top-auswahl/",
+        top_subtitle: "atmosphärische romane voller romantik und geheimnisse.",
+        disc_title: "literatur-lounge",
+        disc_subtitle: "wähle deine sprache und diskutiere mit anderen!",
+        btn_create_post: "thema erstellen",
+        disc_branch_lang: "1. sprachbereich",
+        disc_branch_book: "2. nach buch filtern",
+        friends_online: "aktive freunde",
+        btn_friends: "freundesliste",
+      },
+      es: {
+        tab_read: "libros leídos",
+        tab_process: "leyendo",
+        tab_want: "quiero leer",
+        tab_recommendations: "recomendaciones",
+        tab_discussions: "discusiones",
+        btn_assistant: "compañero ai",
+        btn_book_child: "hijo del libro",
+        read_title: "mis cartas de libros e impresiones",
+        read_subtitle: "crea reseñas estéticas con múltiples valoraciones",
+        btn_write_letter: "escribir carta",
+        process_title: "en proceso de lectura",
+        process_subtitle: "sigue tu progreso de páginas diariamente",
+        btn_add_active: "añadir lectura",
+        want_title: "lista de deseos",
+        want_subtitle: "libros esperando por noches acogedoras",
+        btn_add_wish: "añadir a deseos",
+        top_title: "mejores selecciones dark cherry/",
+        top_subtitle: "novelas atmosféricas llenas de romance y misterio.",
+        disc_title: "salón literario global",
+        disc_subtitle: "¡elige tu idioma y comparte tus opiniones!",
+        btn_create_post: "crear tema",
+        disc_branch_lang: "1. rama de idioma",
+        disc_branch_book: "2. filtrar por libro",
+        friends_online: "amigos lectores",
+        btn_friends: "lista de amigos",
+      },
+      it: {
+        tab_read: "libri letti",
+        tab_process: "in lettura",
+        tab_want: "da leggere",
+        tab_recommendations: "consigliati",
+        tab_discussions: "discussioni",
+        btn_assistant: "assistente ai",
+        btn_book_child: "bambino del libro",
+        read_title: "le mie lettere di libri",
+        read_subtitle: "recensioni estetiche con valutazioni dettagliate",
+        btn_write_letter: "scrivi una lettera",
+        process_title: "in corso di lettura",
+        process_subtitle: "traccia le pagine lette ogni giorno",
+        btn_add_active: "aggiungi libro",
+        want_title: "lista dei desideri",
+        want_subtitle: "libri per serate calde e accoglienti",
+        btn_add_wish: "aggiungi alla lista",
+        top_title: "scelte dark cherry/",
+        top_subtitle: "romanzi atmosferici ricchi di mistero e romanticismo.",
+        disc_title: "salotto letterario",
+        disc_subtitle: "scegli la lingua e discuti dei tuoi libri preferiti!",
+        btn_create_post: "crea post",
+        disc_branch_lang: "1. lingua",
+        disc_branch_book: "2. filtra per libro",
+        friends_online: "amici lettori",
+        btn_friends: "amici",
+      },
+      pl: {
+        tab_read: "przeczytane",
+        tab_process: "w trakcie czytania",
+        tab_want: "chcę przeczytać",
+        tab_recommendations: "polecane",
+        tab_discussions: "dyskusje",
+        btn_assistant: "asystent ai",
+        btn_book_child: "dziecko książkowe",
+        read_title: "moje listy książkowe",
+        read_subtitle: "twórz estetyczne recenzje z ocenami w kategoriach",
+        btn_write_letter: "napisz list",
+        process_title: "w trakcie czytania",
+        process_subtitle: "śledź postęp czytania stron",
+        btn_add_active: "dodaj książkę",
+        want_title: "lista życzeń",
+        want_subtitle: "książki czekające na przytulny wieczór",
+        btn_add_wish: "dodaj do życzeń",
+        top_title: "wybór dark cherry/",
+        top_subtitle: "astroferyczne powieści pełne romansu i tajemnic.",
+        disc_title: "salon literacki",
+        disc_subtitle: "wybierz język i dyskutuj z innymi!",
+        btn_create_post: "utwórz wątek",
+        disc_branch_lang: "1. język",
+        disc_branch_book: "2. filtruj według książki",
+        friends_online: "aktywni znajomi",
+        btn_friends: "znajomi",
+      },
+      lt: {
+        tab_read: "perskaitytos knygos",
+        tab_process: "skaitoma",
+        tab_want: "noriu skaityti",
+        tab_recommendations: "rekomendacijos",
+        tab_discussions: "diskusijos",
+        btn_assistant: "ai padėjėjas",
+        btn_book_child: "knygos vaikas",
+        read_title: "mano knygų laiškai",
+        read_subtitle: "estetiškos apžvalgos su įvertinimais",
+        btn_write_letter: "rašyti laišką",
+        process_title: "šiuo metu skaitoma",
+        process_subtitle: "sekite puslapių progresą",
+        btn_add_active: "pridėti knygą",
+        want_title: "norų sąrašas",
+        want_subtitle: "knygos jaukiam vakarui",
+        btn_add_wish: "į norų sąrašą",
+        top_title: "dark cherry top/",
+        top_subtitle: "atmosferiniai romanai su paslaptimi ir romantika.",
+        disc_title: "literatūros klubas",
+        disc_subtitle: "pasirinkite kalbą ir diskutuokite!",
+        btn_create_post: "nauja tema",
+        disc_branch_lang: "1. kalba",
+        disc_branch_book: "2. pagal knygą",
+        friends_online: "aktyvūs draugai",
+        btn_friends: "draugai",
+      },
+      tr: {
+        tab_read: "okunan kitaplar",
+        tab_process: "okunuyor",
+        tab_want: "okunacaklar",
+        tab_recommendations: "tavsiyeler",
+        tab_discussions: "tartışmalar",
+        btn_assistant: "ai asistan",
+        btn_book_child: "kitap çocuğu",
+        read_title: "kitap mektuplarım",
+        read_subtitle: "detaylı puanlamalar ile estetik incelemeler",
+        btn_write_letter: "mektup yaz",
+        process_title: "şu an okunanlar",
+        process_subtitle: "sayfa ilerlemenizi takip edin",
+        btn_add_active: "kitap ekle",
+        want_title: "istek listesi",
+        want_subtitle: "keyifli akşamlar için bekleyen kitaplar",
+        btn_add_wish: "isteklere ekle",
+        top_title: "dark cherry seçimleri/",
+        top_subtitle: "romantizm ve gizem dolu harika romanlar.",
+        disc_title: "edebiyat salonu",
+        disc_subtitle: "dil grubunuzu seçin ve tartışmaya katılın!",
+        btn_create_post: "konu aç",
+        disc_branch_lang: "1. dil seçimi",
+        disc_branch_book: "2. kitaba göre filtrele",
+        friends_online: "aktif okur arkadaşları",
+        btn_friends: "arkadaşlar",
+      },
+      th: {
+        tab_read: "หนังสือที่อ่านแล้ว",
+        tab_process: "กำลังอ่าน",
+        tab_want: "อยากอ่าน",
+        tab_recommendations: "แนะนำยอดนิยม",
+        tab_discussions: "พูดคุย",
+        btn_assistant: "ผู้ช่วย ai",
+        btn_book_child: "ลูกรักคนอ่าน",
+        read_title: "จดหมายหนังสือและความรู้สึก",
+        read_subtitle: "สร้างรีวิวหนังสือพร้อมให้คะแนนแต่ละหมวด",
+        btn_write_letter: "เขียนจดหมาย",
+        process_title: "กำลังอ่านอยู่",
+        process_subtitle: "ติดตามหน้าหนังสือและความคืบหน้า",
+        btn_add_active: "เพิ่มหนังสือที่อ่าน",
+        want_title: "รายการอยากอ่าน",
+        want_subtitle: "หนังสือที่รอคอยการอ่านในคืนแสนสบาย",
+        btn_add_wish: "เพิ่มในรายการอยากอ่าน",
+        top_title: "หนังสือแนะนำ dark cherry/",
+        top_subtitle: "นิยายบรรยากาศลึกลับแสนโรแมนติก",
+        disc_title: "คลับพูดคุยหนังสือ",
+        disc_subtitle: "เลือกภาษาและร่วมพูดคุยกับเพื่อนนักอ่าน!",
+        btn_create_post: "สร้างหัวข้อ",
+        disc_branch_lang: "1. ภาษา",
+        disc_branch_book: "2. กรองตามหนังสือ",
+        friends_online: "เพื่อนนักอ่านที่ออนไลน์",
+        btn_friends: "รายชื่อเพื่อน",
+      }
+    };
+
+    // --- STATE MANAGEMENT ---
+    let currentLang = 'en';
+    let ratings = { overall: 5, love: 5, tragic: 4, funny: 3 };
+
+    // Initial State Mock Storage
+    let state = {
+      user: {
+        handle: 'cherry_lover',
+        emoji: '🌸',
+        genre: 'Dark Academia & Gothic Romance'
+      },
+      assistant: {
+        gender: 'female',
+        age: 26,
+        dob: '1998-10-14',
+        race: 'european',
+        hair: 'cherry',
+        outfit: 'gothic',
+        accessory: 'glasses'
+      },
+      child: {
+        exp: 35,
+        level: 1,
+        streak: 3,
+        outfit: 'Berry Dress',
+        messages: [
+          { sender: 'Lyra', text: 'Hi reader! Did you read any chapters today? I want to grow strong! 🍒' }
+        ]
+      },
+      letters: [
+        {
+          id: 1,
+          title: "The Secret History",
+          author: "Donna Tartt",
+          images: [
+            "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80"
+          ],
+          annotation: "Under the influence of their charismatic classics professor, a group of clever, eccentric misfits at an elite New England college discover a way of thinking that is world away from the humdrum existence of their contemporaries.",
+          impressions: "An absolute dark academia masterpiece. The chilling atmosphere, poetic prose, and tragic character flaws left me spellbound for weeks.",
+          overall: 5,
+          love: 3,
+          tragic: 5,
+          funny: 2,
+          date: "2026-10-28"
+        },
+        {
+          id: 2,
+          title: "Mexican Gothic",
+          author: "Silvia Moreno-Garcia",
+          images: [
+            "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400&q=80"
+          ],
+          annotation: "After receiving a frantic letter from her newly-wed cousin, Noemí Taboada heads to High Place, a distant mansion in the Mexican countryside.",
+          impressions: "Super creepy and deeply satisfying gothic horror filled with dark family secrets and velvet mystery.",
+          overall: 4,
+          love: 4,
+          tragic: 4,
+          funny: 1,
+          date: "2026-10-20"
+        }
+      ],
+      process: [
+        {
+          id: 1,
+          title: "The Shadow of the Wind",
+          author: "Carlos Ruiz Zafón",
+          currentPage: 240,
+          totalPages: 487,
+          cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=400&q=80"
+        }
+      ],
+      wishlist: [
+        {
+          id: 1,
+          title: "Babel",
+          author: "R.F. Kuang",
+          genre: "Dark Fantasy / Academia"
+        },
+        {
+          id: 2,
+          title: "If We Were Villains",
+          author: "M.L. Rio",
+          genre: "Shakespearean Mystery"
+        }
+      ],
+      discussions: [
+        {
+          id: 1,
+          lang: "en",
+          book: "The Secret History",
+          author: "Elena Vance 🍷",
+          text: "Does anyone else feel like Henry Winter's actions were tragic rather than purely evil? Let's talk about the final confrontation chapter!",
+          replies: 14,
+          likes: 32
+        },
+        {
+          id: 2,
+          lang: "uk",
+          book: "Mexican Gothic",
+          author: "Софія_читає 📖",
+          text: "Неймовірна атмосфера маєтку High Place! Хто вже дочитав до розгадки з грибами? Я в захваті!",
+          replies: 8,
+          likes: 19
+        }
+      ],
+      friends: [
+        { name: "Serafina_vamp", status: "reading 'The Picture of Dorian Gray'", emoji: "🥀" },
+        { name: "GothicReader_99", status: "just finished 'Mexican Gothic'", emoji: "🕯️" },
+        { name: "Lucian_Books", status: "writing a letter...", emoji: "☕" }
+      ]
+    };
+
+    // Load from local storage if existing
+    function loadSavedData() {
+      const saved = localStorage.getItem('moreads_data');
+      if (saved) {
+        try {
+          state = JSON.parse(saved);
+        } catch(e){}
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem('moreads_data', JSON.stringify(state));
+    }
+
+    // INITIALIZATION
+    window.onload = function() {
+      loadSavedData();
+      renderStarSelectors();
+      renderLetters();
+      renderProcess();
+      renderWishlist();
+      renderRecommendations();
+      renderDiscussions();
+      renderFriendsList();
+      updateAssistantPreview();
+      updateChildDisplay();
+      setLanguage('en');
+    };
+
+    // LANGUAGE SWITCHING
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('current-lang-code').innerText = lang;
+      
+      const flags = {
+        en: '🇬🇧', uk: '🇺🇦', ru: '🌐', de: '🇩🇪', es: '🇪🇸',
+        it: '🇮🇹', pl: '🇵🇱', lt: '🇱🇹', tr: '🇹🇷', th: '🇹🇭'
+      };
+      document.getElementById('current-lang-flag').innerText = flags[lang] || '🌐';
+
+      // Update text via data-i18n attributes
+      const dictionary = i18n[lang] || i18n['en'];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dictionary[key]) {
+          el.innerText = dictionary[key];
+        }
+      });
+    }
+
+    // TAB NAVIGATION
+    function switchTab(tabId) {
+      const tabs = ['read', 'process', 'want', 'recommendations', 'discussions'];
+      tabs.forEach(t => {
+        document.getElementById(`tab-${t}`).classList.add('hidden');
+        
+        // Reset Header Button Styles
+        const btn = document.getElementById(`nav-${t}`);
+        const mobBtn = document.getElementById(`mob-${t}`);
+        if (btn) {
+          btn.className = "px-4 py-2 rounded-xl text-xs font-semibold lowercase transition-all flex items-center gap-2 text-cherry-200 hover:text-white hover:bg-cherry-800/50";
+        }
+        if (mobBtn) {
+          mobBtn.className = "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-cherry-900/80 text-cherry-200";
+        }
+      });
+
+      // Show Selected Tab
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+      // Highlight Active Buttons
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      const activeMobBtn = document.getElementById(`mob-${tabId}`);
+      if (activeBtn) {
+        activeBtn.className = "px-4 py-2 rounded-xl text-xs font-semibold lowercase transition-all flex items-center gap-2 bg-cherry-600 text-white shadow-md";
+      }
+      if (activeMobBtn) {
+        activeMobBtn.className = "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap bg-cherry-600 text-white";
+      }
+    }
+
+    // --- RENDER READ LETTERS ---
+    function renderLetters() {
+      const grid = document.getElementById('letters-grid');
+      const search = document.getElementById('letter-search').value.toLowerCase();
+      
+      const filtered = state.letters.filter(l => 
+        l.title.toLowerCase().includes(search) || l.author.toLowerCase().includes(search)
+      );
+
+      document.getElementById('letter-count').innerText = `showing ${filtered.length} letters`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center text-cherry-400/60 bg-cherry-950/40 rounded-3xl border border-dashed border-cherry-800">
+            <div class="text-4xl mb-2">💌</div>
+            <p class="text-xs">no book letters found yet. write your first letter!</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(l => `
+        <div class="cherry-card rounded-3xl p-5 flex flex-col justify-between transition duration-300 hover:scale-[1.01] shadow-xl relative overflow-hidden">
+          <div class="space-y-3">
+            <!-- Header -->
+            <div class="flex items-start justify-between gap-2 border-b border-cherry-800/40 pb-3">
+              <div>
+                <h3 class="font-bold text-lg text-white serif leading-snug">${l.title}</h3>
+                <p class="text-xs text-cherry-300 italic font-medium">by ${l.author}</p>
+              </div>
+              <span class="text-[10px] bg-cherry-900 text-cherry-300 border border-cherry-700/50 px-2 py-0.5 rounded-full whitespace-nowrap">${l.date}</span>
+            </div>
+
+            <!-- Image Gallery Preview -->
+            ${l.images && l.images.length > 0 ? `
+              <div class="grid ${l.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-2 rounded-2xl overflow-hidden my-2">
+                ${l.images.map(img => `<img src="${img}" alt="Aesthetic" class="w-full h-32 object-cover rounded-xl border border-cherry-800/50 hover:opacity-90 transition">`).join('')}
+              </div>
+            ` : ''}
+
+            <!-- Annotation & Impressions -->
+            ${l.annotation ? `
+              <div class="bg-cherry-950/60 p-3 rounded-2xl border border-cherry-800/40 text-xs text-cherry-200">
+                <span class="font-bold text-cherry-400 text-[10px] uppercase block mb-0.5">Annotation</span>
+                ${l.annotation}
+              </div>
+            ` : ''}
+
+            <div class="text-xs text-cherry-100 italic leading-relaxed bg-cherry-900/30 p-3 rounded-2xl border border-cherry-800/30">
+              <span class="not-italic text-gold-300 font-bold">"</span>${l.impressions}<span class="not-italic text-gold-300 font-bold">"</span>
+            </div>
+
+            <!-- Detailed Multi Ratings -->
+            <div class="bg-cherry-950/80 p-3 rounded-2xl border border-cherry-800/60 text-[11px] grid grid-cols-2 gap-2">
+              <div>
+                <span class="text-cherry-400 block text-[9px] uppercase font-bold">Overall</span>
+                <span class="text-gold-300 font-bold">${'★'.repeat(l.overall)}${'☆'.repeat(5-l.overall)}</span>
+              </div>
+              <div>
+                <span class="text-cherry-400 block text-[9px] uppercase font-bold">Love Line 💖</span>
+                <span class="text-rose-300 font-bold">${'★'.repeat(l.love)}${'☆'.repeat(5-l.love)}</span>
+              </div>
+              <div>
+                <span class="text-cherry-400 block text-[9px] uppercase font-bold">Tragic 💔</span>
+                <span class="text-purple-300 font-bold">${'★'.repeat(l.tragic)}${'☆'.repeat(5-l.tragic)}</span>
+              </div>
+              <div>
+                <span class="text-cherry-400 block text-[9px] uppercase font-bold">Funny 😂</span>
+                <span class="text-amber-300 font-bold">${'★'.repeat(l.funny)}${'☆'.repeat(5-l.funny)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-cherry-800/40 mt-4 flex items-center justify-between text-xs text-cherry-400">
+            <span class="flex items-center gap-1 text-[11px]">💌 Letter Entry</span>
+            <button onclick="deleteLetter(${l.id})" class="text-cherry-500 hover:text-rose-300"><i class="fa-solid fa-trash text-xs"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // --- STAR RATING SELECTOR LOGIC ---
+    function renderStarSelectors() {
+      const categories = ['overall', 'love', 'tragic', 'funny'];
+      categories.forEach(cat => {
+        const container = document.getElementById(`star-${cat}`);
+        if (!container) return;
+        container.innerHTML = [1, 2, 3, 4, 5].map(star => `
+          <button type="button" onclick="setRating('${cat}', ${star})" class="star-btn cursor-pointer">
+            ${star <= ratings[cat] ? '★' : '☆'}
+          </button>
+        `).join('');
+      });
+    }
+
+    function setRating(cat, val) {
+      ratings[cat] = val;
+      renderStarSelectors();
+    }
+
+    // --- CREATE LETTER MODAL CONTROLS ---
+    function openCreateLetterModal() {
+      document.getElementById('create-letter-modal').classList.remove('hidden');
+    }
+    function closeCreateLetterModal() {
+      document.getElementById('create-letter-modal').classList.add('hidden');
+    }
+
+    function saveLetter() {
+      const title = document.getElementById('let-title').value;
+      const author = document.getElementById('let-author').value;
+      const imagesStr = document.getElementById('let-images').value;
+      const annotation = document.getElementById('let-annotation').value;
+      const impressions = document.getElementById('let-impressions').value;
+
+      if (!title || !author) {
+        alert("Please enter both book title and author!");
+        return;
+      }
+
+      const images = imagesStr ? imagesStr.split(',').map(s => s.trim()) : [];
+
+      const newLetter = {
+        id: Date.now(),
+        title,
+        author,
+        images,
+        annotation,
+        impressions: impressions || "An unforgettable journey into cherry-flavored pages.",
+        overall: ratings.overall,
+        love: ratings.love,
+        tragic: ratings.tragic,
+        funny: ratings.funny,
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      state.letters.unshift(newLetter);
+      saveData();
+      renderLetters();
+      closeCreateLetterModal();
+      
+      // Award Pet EXP for reading activity!
+      addPetExp(20, "Logged a new read book letter!");
+    }
+
+    function deleteLetter(id) {
+      state.letters = state.letters.filter(l => l.id !== id);
+      saveData();
+      renderLetters();
+    }
+
+    // --- PROCESS TAB (IN READING) ---
+    function renderProcess() {
+      const grid = document.getElementById('process-grid');
+      grid.innerHTML = state.process.map(p => {
+        const pct = Math.round((p.currentPage / p.totalPages) * 100);
+        return `
+          <div class="cherry-card rounded-3xl p-5 flex items-center gap-5">
+            <img src="${p.cover}" class="w-24 h-36 object-cover rounded-2xl shadow-lg border border-cherry-700/50">
+            <div class="flex-grow space-y-2 text-xs">
+              <h3 class="font-bold text-base text-white serif">${p.title}</h3>
+              <p class="text-cherry-300">by ${p.author}</p>
+              
+              <div class="bg-cherry-950 p-2 rounded-xl border border-cherry-800 space-y-1">
+                <div class="flex justify-between text-[11px] font-bold">
+                  <span>Progress</span>
+                  <span class="text-gold-300">${p.currentPage} / ${p.totalPages} p. (${pct}%)</span>
+                </div>
+                <div class="w-full bg-cherry-900 rounded-full h-2">
+                  <div class="bg-cherry-500 h-2 rounded-full" style="width: ${pct}%"></div>
+                </div>
+              </div>
+
+              <div class="flex gap-2 pt-1">
+                <button onclick="updatePages(${p.id})" class="bg-cherry-700 hover:bg-cherry-600 text-white px-3 py-1 rounded-lg text-[11px] font-bold">+ update pages</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openAddProcessModal() {
+      const title = prompt("Enter book title:");
+      const author = prompt("Enter author:");
+      const totalPages = parseInt(prompt("Total pages:", "350") || "350");
+      if (title && author) {
+        state.process.push({
+          id: Date.now(),
+          title,
+          author,
+          currentPage: 0,
+          totalPages,
+          cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80"
+        });
+        saveData();
+        renderProcess();
+      }
+    }
+
+    function updatePages(id) {
+      const p = state.process.find(x => x.id === id);
+      if (p) {
+        const added = parseInt(prompt("How many pages did you read today?", "25") || "0");
+        if (added > 0) {
+          p.currentPage = Math.min(p.totalPages, p.currentPage + added);
+          saveData();
+          renderProcess();
+          addPetExp(15, `Read ${added} pages today!`);
+        }
+      }
+    }
+
+    // --- WANT TO READ WISHLIST ---
+    function renderWishlist() {
+      const grid = document.getElementById('wishlist-grid');
+      grid.innerHTML = state.wishlist.map(w => `
+        <div class="cherry-card rounded-2xl p-4 text-xs space-y-2 border border-cherry-800/50 flex flex-col justify-between">
+          <div>
+            <span class="bg-cherry-900 text-gold-300 border border-cherry-700 px-2 py-0.5 rounded-md text-[10px] font-bold">${w.genre}</span>
+            <h4 class="font-bold text-white text-sm serif mt-2">${w.title}</h4>
+            <p class="text-cherry-300">by ${w.author}</p>
+          </div>
+          <button onclick="moveWishToRead('${w.title}', '${w.author}')" class="mt-3 w-full bg-cherry-800 hover:bg-cherry-700 text-white py-1.5 rounded-xl text-[11px] font-semibold">
+            ✨ mark as read
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function openAddWishModal() {
+      const title = prompt("Book Title:");
+      const author = prompt("Author:");
+      const genre = prompt("Genre:", "Dark Fantasy");
+      if (title && author) {
+        state.wishlist.push({ id: Date.now(), title, author, genre });
+        saveData();
+        renderWishlist();
+      }
+    }
+
+    function moveWishToRead(title, author) {
+      document.getElementById('let-title').value = title;
+      document.getElementById('let-author').value = author;
+      switchTab('read');
+      openCreateLetterModal();
+    }
+
+    // --- TOP RECOMMENDATIONS ---
+    function renderRecommendations() {
+      const grid = document.getElementById('recommendations-grid');
+      const picks = [
+        { title: "The Seven Husbands of Evelyn Hugo", author: "Taylor Jenkins Reid", tag: "Hollywood Romance", desc: "A reclusive Hollywood icon is ready to tell the truth about her glamorous and scandalous life.", cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80" },
+        { title: "Atlas Six", author: "Olivie Blake", tag: "Dark Academia", desc: "Six dark magicians compete for five seats in the world's most secretive society.", cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80" },
+        { title: "A Dowry of Blood", author: "S.T. Gibson", tag: "Gothic Vampire", desc: "A seductive and tragic retelling of Dracula's brides filled with passion and obsession.", cover: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400&q=80" }
+      ];
+
+      grid.innerHTML = picks.map(p => `
+        <div class="cherry-card rounded-3xl p-5 text-xs flex flex-col justify-between space-y-3">
+          <div class="space-y-2">
+            <img src="${p.cover}" class="w-full h-40 object-cover rounded-2xl border border-cherry-700/50">
+            <span class="bg-cherry-900 text-cherry-300 border border-cherry-700/50 px-2.5 py-0.5 rounded-full text-[10px] font-bold inline-block">${p.tag}</span>
+            <h3 class="font-bold text-base text-white serif">${p.title}</h3>
+            <p class="text-cherry-300 italic">by ${p.author}</p>
+            <p class="text-cherry-200 leading-relaxed text-[11px]">${p.desc}</p>
+          </div>
+          <button onclick="moveWishToRead('${p.title}', '${p.author}')" class="w-full bg-cherry-600 hover:bg-cherry-500 text-white font-bold py-2 rounded-xl transition">
+            💌 write a letter for this
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // --- DISCUSSIONS TAB ---
+    function renderDiscussions() {
+      const feed = document.getElementById('discussions-feed');
+      const langFilter = document.getElementById('disc-lang-filter').value;
+      const bookFilter = document.getElementById('disc-book-filter').value;
+
+      let filtered = state.discussions;
+      if (langFilter !== 'all') {
+        filtered = filtered.filter(d => d.lang === langFilter);
+      }
+      if (bookFilter !== 'all') {
+        filtered = filtered.filter(d => d.book === bookFilter);
+      }
+
+      if (filtered.length === 0) {
+        feed.innerHTML = `
+          <div class="bg-cherry-950/40 p-8 rounded-2xl text-center text-cherry-400 text-xs border border-cherry-800">
+            No public threads in this branch yet. Be the first to start a conversation!
+          </div>
+        `;
+        return;
+      }
+
+      feed.innerHTML = filtered.map(d => `
+        <div class="cherry-card p-5 rounded-2xl text-xs space-y-3 border border-cherry-800/60">
+          <div class="flex items-center justify-between border-b border-cherry-800/40 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-full bg-cherry-700 text-white font-bold flex items-center justify-center text-xs">💬</span>
+              <div>
+                <span class="font-bold text-white">${d.author}</span>
+                <span class="text-[10px] text-cherry-400 block">branch: <span class="uppercase">${d.lang}</span> • book: <span class="text-gold-300 font-semibold">${d.book}</span></span>
+              </div>
+            </div>
+            <span class="bg-cherry-900 border border-cherry-700/50 text-[10px] text-cherry-300 px-2 py-0.5 rounded-full">public thread</span>
+          </div>
+
+          <p class="text-cherry-100 leading-relaxed text-sm">${d.text}</p>
+
+          <div class="flex items-center gap-4 pt-2 text-cherry-300 text-[11px]">
+            <button onclick="likePost(${d.id})" class="hover:text-rose-400 flex items-center gap-1">
+              ❤️ <span>${d.likes}</span>
+            </button>
+            <button onclick="replyPost(${d.id})" class="hover:text-gold-300 flex items-center gap-1">
+              💬 <span>${d.replies} replies</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterDiscussions() {
+      renderDiscussions();
+    }
+
+    function openNewPostModal() {
+      document.getElementById('new-post-modal').classList.toggle('hidden');
+    }
+
+    function publishPost() {
+      const lang = document.getElementById('post-lang-select').value;
+      const book = document.getElementById('post-book-input').value;
+      const text = document.getElementById('post-text-input').value;
+
+      if (!book || !text) {
+        alert("Please specify book and discussion post text!");
+        return;
+      }
+
+      state.discussions.unshift({
+        id: Date.now(),
+        lang,
+        book,
+        author: `${state.user.handle} ${state.user.emoji}`,
+        text,
+        replies: 0,
+        likes: 1
+      });
+
+      saveData();
+      renderDiscussions();
+      openNewPostModal();
+      addPetExp(10, "Posted in the discussion board!");
+    }
+
+    function likePost(id) {
+      const d = state.discussions.find(x => x.id === id);
+      if (d) {
+        d.likes++;
+        saveData();
+        renderDiscussions();
+      }
+    }
+
+    function replyPost(id) {
+      const reply = prompt("Enter your reply to this discussion thread:");
+      if (reply) {
+        const d = state.discussions.find(x => x.id === id);
+        if (d) {
+          d.replies++;
+          saveData();
+          renderDiscussions();
+          addPetExp(5, "Participated in book chat!");
+        }
+      }
+    }
+
+    // --- ASSISTANT CUSTOMIZER LOGIC ---
+    function toggleAssistantModal() {
+      document.getElementById('assistant-modal').classList.toggle('hidden');
+    }
+
+    function updateAssistantPreview() {
+      const gender = document.getElementById('ast-gender').value;
+      const age = document.getElementById('ast-age').value;
+      const race = document.getElementById('ast-race').value;
+      const hair = document.getElementById('ast-hair').value;
+      const outfit = document.getElementById('ast-outfit').value;
+      const accessory = document.getElementById('ast-accessory').value;
+
+      // Update Emoji Avatar representation
+      let avatarEmoji = '💃';
+      if (gender === 'male') avatarEmoji = '🕺';
+      else if (gender === 'nonbinary') avatarEmoji = '🧑‍🎤';
+
+      document.getElementById('assistant-avatar-card').innerText = avatarEmoji;
+      document.getElementById('assistant-preview-name').innerText = gender === 'male' ? "julian (ai companion)" : "madeline (ai companion)";
+      document.getElementById('assistant-preview-details').innerText = `${age} yrs • ${race} • ${hair} hair • ${outfit}`;
+
+      // Set speech bubble tip
+      const tips = [
+        "Dark romance tip: Always keep a bookmark near the heartbreaking plot twists!",
+        "A tragic ending only makes the beauty of the love story shine brighter.",
+        "Remember to hydrate with cherry tea while reading late at night!",
+        "Every book letter you write nurtures your reading child!"
+      ];
+      document.getElementById('assistant-speech').innerText = tips[Math.floor(Math.random() * tips.length)];
+    }
+
+    function saveAssistantSettings() {
+      state.assistant = {
+        gender: document.getElementById('ast-gender').value,
+        age: document.getElementById('ast-age').value,
+        dob: document.getElementById('ast-dob').value,
+        race: document.getElementById('ast-race').value,
+        hair: document.getElementById('ast-hair').value,
+        outfit: document.getElementById('ast-outfit').value,
+        accessory: document.getElementById('ast-accessory').value
+      };
+      saveData();
+      toggleAssistantModal();
+    }
+
+    // --- BOOK CHILD VIRTUAL PET DRAWER LOGIC ---
+    function toggleChildDrawer() {
+      const drawer = document.getElementById('child-drawer');
+      drawer.classList.toggle('translate-x-full');
+    }
+
+    function updateChildDisplay() {
+      const c = state.child;
+      document.getElementById('child-exp-val').innerText = c.exp;
+      document.getElementById('child-exp-bar').style.width = `${Math.min(100, c.exp)}%`;
+      document.getElementById('child-streak-val').innerText = c.streak;
+      document.getElementById('child-outfit-desc').innerText = `wearing: ${c.outfit}`;
+
+      // Stages based on EXP level
+      let stageTitle = "Sprout Tome";
+      let petEmoji = "🌱";
+
+      if (c.exp >= 80) {
+        stageTitle = "Gothic Scholar Maiden";
+        petEmoji = "👸";
+      } else if (c.exp >= 40) {
+        stageTitle = "Little Reader Fairy";
+        petEmoji = "🧚‍♀️";
+      } else {
+        stageTitle = "Cherry Book Sprout";
+        petEmoji = "🌱";
+      }
+
+      document.getElementById('child-stage-title').innerText = stageTitle;
+      document.getElementById('child-avatar-emoji').innerText = petEmoji;
+      document.getElementById('child-badge-lvl').innerText = `lvl ${c.level}`;
+
+      // Render Messages
+      const box = document.getElementById('child-chat-box');
+      box.innerHTML = c.messages.map(m => `
+        <div class="bg-cherry-800/60 p-2 rounded-xl text-cherry-100 max-w-[85%] mb-2">
+          <span class="font-bold text-gold-300">${m.sender}:</span> ${m.text}
+        </div>
+      `).join('');
+    }
+
+    function addPetExp(pts, reason) {
+      state.child.exp += pts;
+      if (state.child.exp >= 100) {
+        state.child.exp -= 100;
+        state.child.level++;
+        state.child.messages.push({
+          sender: 'Lyra',
+          text: `🎉 Yay! I leveled up to level ${state.child.level}! Thank you for reading daily!`
+        });
+      }
+      saveData();
+      updateChildDisplay();
+    }
+
+    function sendChildChatMessage() {
+      const input = document.getElementById('child-chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      state.child.messages.push({ sender: 'You', text });
+      input.value = '';
+
+      // Automated Pet Response
+      setTimeout(() => {
+        const replies = [
+          "I love when we read together! What chapter are we on next?",
+          "Your words make me feel so happy! Keep writing letters 🌸",
+          "Can we unlock new clothes soon? You are the best reader!",
+          "Reading every day makes our cherry garden bloom!"
+        ];
+        const botReply = replies[Math.floor(Math.random() * replies.length)];
+        state.child.messages.push({ sender: 'Lyra', text: botReply });
+        addPetExp(5, "Chatted with Book Child!");
+      }, 600);
+
+      updateChildDisplay();
+    }
+
+    function changeChildOutfit(style) {
+      if (style === 'berry') state.child.outfit = 'Berry Silk Apron 🍓';
+      if (style === 'gothic') state.child.outfit = 'Gothic Velvet Ribbon 🎀';
+      if (style === 'wizard') state.child.outfit = 'Cozy Scholar Cape 🧙‍♀️';
+      saveData();
+      updateChildDisplay();
+    }
+
+    // --- AUTH & USER PROFILE MODAL ---
+    function toggleAuthModal() {
+      document.getElementById('auth-modal').classList.toggle('hidden');
+    }
+
+    function saveUserProfile() {
+      state.user.handle = document.getElementById('user-handle-input').value;
+      state.user.emoji = document.getElementById('user-emoji-input').value;
+      state.user.genre = document.getElementById('user-genre-input').value;
+      
+      document.getElementById('user-avatar-display').innerText = state.user.emoji;
+      saveData();
+      toggleAuthModal();
+    }
+
+    // --- FRIENDS LIST ---
+    function openFriendsModal() {
+      document.getElementById('friends-modal').classList.toggle('hidden');
+    }
+
+    function renderFriendsList() {
+      const container = document.getElementById('friends-list-container');
+      container.innerHTML = state.friends.map(f => `
+        <div class="bg-cherry-900/60 p-3 rounded-2xl border border-cherry-800 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">${f.emoji}</span>
+            <div>
+              <div class="font-bold text-white">${f.name}</div>
+              <div class="text-[10px] text-cherry-300">${f.status}</div>
+            </div>
+          </div>
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        </div>
+      `).join('');
+    }
+
+    function addFriend() {
+      const name = document.getElementById('new-friend-name').value;
+      if (name) {
+        state.friends.push({ name, status: "just joined moreads/", emoji: "🍒" });
+        document.getElementById('new-friend-name').value = '';
+        saveData();
+        renderFriendsList();
+      }
+    }
+  </script>
+</body>
+</html>
